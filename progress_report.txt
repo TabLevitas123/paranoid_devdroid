@@ -1,3 +1,3 @@
 
-    Integrated an LLM feedback loop for agents. Agents now receive feedback from LLMs based on task outcomes, helping them refine their strategies for future tasks.
+    Added an LLM-enhanced memory garbage collection system that evaluates memory relevance using LLMs and removes irrelevant memories from the database.
     
