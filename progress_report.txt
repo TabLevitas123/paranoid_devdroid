@@ -1,3 +1,3 @@
 
-    Added LLM-driven Multi-Agent Strategy Optimization system, allowing agents to continuously refine their strategies based on feedback from task outcomes.
+    Added Multi-Agent Task Prioritization system, enabling agents to dynamically prioritize tasks based on urgency, complexity, and resource availability.
     
