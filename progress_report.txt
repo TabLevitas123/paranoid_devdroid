@@ -28,6 +28,10 @@
 - A dedicated communication system between agents to log messages and share decision-making results.
 - This keeps agents in sync and allows them to relay information back to Marvin for the final decision.
 
+### 5. Web scraping module created
+
+### 6. Shared Memory Database (AWS postgressql) and integrations done
+
 ## What Still Needs to Be Done:
 
 ### 1. **UI Enhancements**
