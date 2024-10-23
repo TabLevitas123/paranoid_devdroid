@@ -1,3 +1,3 @@
 
-    Added LLM-Assisted Decision Tree Construction system, allowing agents to map out potential decisions and their consequences for complex multi-step tasks.
+    Added Adaptive Task Complexity Analysis system, allowing agents to dynamically adjust task execution based on complexity.
     
