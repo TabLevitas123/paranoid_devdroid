@@ -1,3 +1,3 @@
 
-    Integrated an advanced real-time monitoring system that tracks agent performance, decision-making, and memory usage.
+    Integrated the Agent Collaboration Framework where agents can collaborate on tasks, communicate via LLMs, and give feedback to each other. This improves task coordination and collective learning.
     
