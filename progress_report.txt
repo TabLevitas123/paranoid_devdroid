@@ -1,4 +1,4 @@
 
-    Integrated LLM-based intelligence into Paranoid_DevDroid agents.
-    Agents now communicate with LLMs for task execution, decision-making, and memory-based reasoning.
+    Added a model selection plugin that allows users to select models from OpenAI, Anthropic, Meta, and Hugging Face.
+    The plugin supports interactions with multiple models using predefined logic for each provider.
     
