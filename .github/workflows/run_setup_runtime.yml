@@ -30,8 +30,7 @@ jobs:
         expect << EOF
         spawn python setup_runtime.py
         expect {
-          "*Enter*" { send "skip"; exp_continue }
-          "*skip*" { send "skip"; exp_continue }
+          -re ".*" { send "skip"; exp_continue }
           eof
         }
         EOF
