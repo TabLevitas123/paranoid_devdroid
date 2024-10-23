@@ -1,7 +1,7 @@
 
-Enhanced the Roastmaster to version 2.0:
-1. Personality-Driven Responses: The Roastmaster now responds with wit, sarcasm, and humor.
-2. Dynamic Tone Adjustment: Adjusts roast intensity based on user mood and interaction context.
-3. Humor Engine: Generates witty comebacks and playful roasts in real-time.
-4. Sentiment Analysis: Detects user sentiment to ensure playful and appropriate roast intensity.
-5. Interactive Game Mode: Engages users in a friendly roast battle with humorous back-and-forth exchanges.
+Enhanced the Roastmaster to version 2.1:
+1. Reasoning Flaw Detection: Analyzes agent plans to find logical inconsistencies and flaws.
+2. Cognitive Critique: Offers detailed critiques of agent reasoning to highlight areas of improvement.
+3. Task Outcome Prediction: Predicts task outcomes based on agent plans, identifying potential risks.
+4. Humorous Error Commentary: Provides witty or sarcastic feedback on flaws in agent reasoning.
+5. Real-Time Critique Feedback: Delivers on-the-fly feedback during task execution to improve decision-making.
