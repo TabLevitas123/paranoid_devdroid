@@ -13,6 +13,23 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
     - name: Run health check
       run: |
         python health_check.py  # Custom script to check system health and report errors
+
+    - name: Send Slack Notification on Failure
+      if: failure()
+      uses: rtCamp/action-slack-notify@v2
+      with:
+        args: "Error encountered during GitHub Action run. Check logs for details."
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
