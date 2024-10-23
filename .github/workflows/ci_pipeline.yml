@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '**.py'
   pull_request:
     branches:
       - main
@@ -25,12 +23,41 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install flake8 black pytest
+        pip install flake8 black
     - name: Run Flake8 for linting
       run: |
         flake8 .
 
+    - name: Run Black for formatting
+      run: |
+        black --check .
+
   test:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Run tests
+      run: |
+        pytest
+
+  security:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -43,8 +70,23 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install pytest
+        pip install bandit
 
-    - name: Run unit tests
+    - name: Run Bandit for security checks
       run: |
-        pytest
+        bandit -r .
+
+  deploy:
+    needs: security
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to AWS
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: 'us-east-2'
+      run: |
+        echo "Deploying the application..."
