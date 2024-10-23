@@ -9,16 +9,17 @@ class Agent:
         self.is_active = True
 
     def create_sub_agent(self, sub_agent_name, sub_agent_task):
+        # Create and append sub-agents to the agent's task list
         sub_agent = Agent(sub_agent_name, sub_agent_task)
         self.sub_agents.append(sub_agent)
         return sub_agent
 
     def communicate(self, message):
-        # Basic communication logic (expand this later for inter-agent communication)
+        # Extend this communication logic to inter-agent communication protocols later
         print(f"{self.name} says: {message}")
 
     def report(self):
-        # Basic report for the agent and its sub-agents
+        # Provide a detailed report of the agent and sub-agent tasks
         print(f"Agent: {self.name} is handling task: {self.task}")
         for sub_agent in self.sub_agents:
             sub_agent.report()
@@ -29,11 +30,10 @@ class HallucinationMonitor(Agent):
         self.hallucination_threshold = hallucination_threshold
 
     def detect_hallucination(self, agent_decision):
-        # Basic logic to detect hallucinations (randomly decide for now, could improve with ML later)
-        hallucination_score = random.random()
-        if hallucination_score > self.hallucination_threshold:
-            self.communicate("Warning! Potential hallucination detected.")
+        # Check whether the agent decision crosses the hallucination threshold
+        if random.random() > self.hallucination_threshold:
+            print(f"Agent {self.name} detected a hallucination in decision: {agent_decision}")
             return True
-        else:
-            self.communicate("All clear. No hallucinations detected.")
-            return False
+        return False
+
+# Additional refactoring for other components can follow
