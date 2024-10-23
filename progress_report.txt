@@ -1,3 +1,3 @@
 
-    Integrated the Agent Collaboration Framework where agents can collaborate on tasks, communicate via LLMs, and give feedback to each other. This improves task coordination and collective learning.
+    Added task-specific memory expansion with inter-agent memory sharing, allowing agents to retrieve contextually relevant memories and share key information during task execution.
     
