@@ -1,4 +1,4 @@
 
-    Refined clustering models and task-specific memory retrieval for Paranoid_DevDroid project.
-    Clusters are now more task-specific, and the memory retrieval prioritizes relevant clusters.
+    Added memory garbage collection module to clean up outdated or irrelevant memories in Paranoid_DevDroid.
+    This ensures that the memory database remains optimized for task execution.
     
