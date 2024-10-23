@@ -1,4 +1,3 @@
 
-    Added an LLM-assisted task breakdown system that allows agents to break down complex tasks into smaller, manageable steps.
-    LLMs assist in creating subtasks for more efficient task execution.
+    Integrated an advanced real-time monitoring system that tracks agent performance, decision-making, and memory usage.
     
