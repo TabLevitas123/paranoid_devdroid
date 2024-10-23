@@ -28,8 +28,9 @@ jobs:
 
     - name: Send Slack Notification on Failure
       if: failure()
-      uses: rtCamp/action-slack-notify@v2
+      uses: slackapi/slack-github-action@v1.20.0
       with:
-        args: "Error encountered during GitHub Action run. Check logs for details."
+        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+        slack-message: "Error encountered during the health check. Check logs for details."
       env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
