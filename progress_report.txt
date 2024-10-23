@@ -1,4 +1,4 @@
 
-    Added memory garbage collection module to clean up outdated or irrelevant memories in Paranoid_DevDroid.
-    This ensures that the memory database remains optimized for task execution.
+    Added enhanced memory retrieval strategies including weighted retrieval and context-based retrieval.
+    These strategies improve how memories are fetched based on task relevance and context.
     
