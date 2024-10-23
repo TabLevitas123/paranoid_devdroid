@@ -6,15 +6,24 @@ class Roastmaster(Agent):
         super().__init__(name, task)
 
     def roast_decision(self, agent_decision):
-        # Critique the decision with randomly chosen harsh feedback
+        # Expand the roast logic to include variable roasting levels based on decision quality
         roast_messages = [
             "That’s the worst decision I’ve seen all day! What were you thinking?",
             "Really? You thought that would work? Try again.",
             "I’ve seen a toaster make better decisions.",
             "Is that the best you’ve got? Come on!",
-            "Even a coin flip would give you better odds of success."
+            "Even a coin flip would give you better odds of success.",
+            "Did you even try? Or did you randomly generate this idea?",
+            "You know, it would be faster if I just did everything myself."
         ]
-        roast_message = random.choice(roast_messages)
+
+        # Choose roast intensity based on decision quality (placeholder for decision evaluation logic)
+        roast_level = random.randint(0, 10)
+        if roast_level > 7:
+            roast_message = random.choice(roast_messages[:3])
+        else:
+            roast_message = random.choice(roast_messages[3:])
+
         self.communicate(f"Roastmaster here! {roast_message}")
 
 # Example of usage for testing
