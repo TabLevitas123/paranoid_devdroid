@@ -1,3 +1,4 @@
 
-    Added an LLM-enhanced memory garbage collection system that evaluates memory relevance using LLMs and removes irrelevant memories from the database.
+    Added an LLM-assisted task breakdown system that allows agents to break down complex tasks into smaller, manageable steps.
+    LLMs assist in creating subtasks for more efficient task execution.
     
