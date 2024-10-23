@@ -1,3 +1,3 @@
 
-    Added an auto-LLM selection plugin that automatically chooses the best LLM for a given task based on task analysis and available models (API keys or local models).
+    Added LLM-enhanced memory clustering and retrieval system. LLMs now refine memory clusters and improve memory retrieval relevance based on task context.
     
