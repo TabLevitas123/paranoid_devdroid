@@ -1,0 +1,43 @@
+
+name: Setup Runtime and Auto-Skip APIs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  run-setup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run setup_runtime.py with auto-skip for APIs
+      run: |
+        sudo apt-get install expect  # Install expect for simulating input
+        expect << EOF
+        spawn python setup_runtime.py
+        expect "Enter API Key or skip"
+        send "skip"
+        expect "Enter API Key or skip"
+        send "skip"
+        expect "Enter API Key or skip"
+        send "skip"
+        expect eof
+        EOF
+
+    - name: Run the program after setup
+      run: |
+        python main.py
