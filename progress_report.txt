@@ -1,3 +1,3 @@
 
-    Added task-specific memory expansion with inter-agent memory sharing, allowing agents to retrieve contextually relevant memories and share key information during task execution.
+    Added Performance Analytics Dashboard to visualize agent performance, memory usage, and other key system metrics.
     
