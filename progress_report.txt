@@ -1,5 +1,4 @@
 
-    Integrated memory retrieval and agent performance logging into the Paranoid_DevDroid project.
-    Memory retrieval is now functional and pulls task-specific memories from the database.
-    Agent performance logging is now tracking agent task performance in the database.
+    Added real-time monitoring module to the Paranoid_DevDroid project.
+    This module tracks agent performance and memory usage in real-time.
     
