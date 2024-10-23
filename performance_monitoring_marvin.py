@@ -6,23 +6,30 @@ class PerformanceMonitoringMarvin(NestedTaskMarvin):
         self.failure_count = 0
         self.resource_usage_over_time = []
         self.task_results = []
+        self.performance_threshold = 0.75  # Threshold for performance adjustments
 
     def track_resource_usage(self):
-        self.resource_usage_over_time.append(self.available_resources)
-
-    def log_task_result(self, task_name, success=True, failure_reason=None):
-        if success:
+        self.resource_usage_over_time.append(self.max_resources)
+        print(f"Tracking resource usage: {self.max_resources}")
+    
+    def analyze_task_performance(self, task_result):
+        if task_result == 'success':
             self.success_count += 1
         else:
             self.failure_count += 1
 
-    def complete_task(self, task_name):
-        try:
-            super().complete_task(task_name)
-            self.log_task_result(task_name, success=True)
-        except Exception as e:
-            self.log_task_result(task_name, success=False, failure_reason=str(e))
+        self.task_results.append(task_result)
+        success_rate = self.success_count / (self.success_count + self.failure_count)
+        
+        # Adjust resources dynamically based on success rate
+        if success_rate < self.performance_threshold:
+            self.max_resources += 1
+            print(f"Performance below threshold, increasing resources to {self.max_resources}")
+        else:
+            self.max_resources = max(1, self.max_resources - 1)
+            print(f"Performance above threshold, decreasing resources to {self.max_resources}")
 
-    def monitor_performance(self):
-        self.track_resource_usage()
-        self.log_event(event_type="Performance Monitoring", details=f"Tasks completed: {self.success_count}, Failures: {self.failure_count}.")
+    def monitor_overall_performance(self):
+        success_rate = self.success_count / (self.success_count + self.failure_count)
+        print(f"Overall success rate: {success_rate:.2f}")
+        return success_rate
