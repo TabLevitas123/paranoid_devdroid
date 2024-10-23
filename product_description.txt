@@ -1,0 +1,66 @@
+
+Agent Swarm Program - Marvin and Sub-Agents
+
+The Agent Swarm program is designed to enable an LLM agent, Marvin, to create a collection of sub-agents that can work together to accomplish complex tasks. Marvin leads the swarm, supported by several specialized agents. These include:
+
+1. **Hallucination Monitor Class**: Detects any hallucinations or strange/unwanted behavior.
+2. **Panel of Experts**: Modeled after real-life experts, providing deliberation and insights related to the user's task.
+3. **Interrogator Class**: Asks agents why their decisions are the best.
+4. **Roastmaster Class**: Critiques agents' decisions and points out flaws.
+5. **Verification Class**: Looks up whether the answers provided by agents are correct.
+6. **Ultimate Decider**: Takes in all data from the agents' deliberations and forms the best decision.
+
+### Features:
+- **Agent Creation**: All agents can create sub-agents to break down tasks if necessary. 
+- **Monitoring**: Every agent, including Marvin, is subject to the decisions of the Hallucination Monitor Board.
+- **Efficiency vs Accuracy Levels**: Users can choose between 5 levels of accuracy, from maximum efficiency (1) to maximum accuracy (5). 
+    - Level 1: Minimum monitoring, high efficiency, but low accuracy (warning issued).
+    - Level 5: Maximum accuracy, thorough monitoring, but high resource usage (warning issued).
+    
+- **Shared Memory with Access Limitations**: A shared memory system exists between agents, with access levels based on agent permissions.
+- **Agent Communication**: All agents communicate with each other to ensure smooth task management.
+- **Machine Learning Integration**: Incorporates NLP, machine learning, deep learning, and reinforcement learning (Q-learning) to improve agent prompting, hallucination detection, and decision-making over time.
+  
+### Additional Features to Integrate:
+1. Web browsing
+2. Touch screen control
+3. Self-improvement (machine learning, deep learning, Q-learning)
+4. Keyboard control
+5. Inter-agent communication
+6. Inter-agent memory (using Retrieval Augmented Generation, SQLite, Vector database, Data Graph)
+7. Performance optimization
+8. Calendar keeping
+9. Alarm clock
+10. User thought/action prediction
+11. Real-time vision of user's screen
+12. Mouse control
+13. Agent lifespan controls
+14. Security
+15. Data/Analytics
+16. NLP advancements
+17. Dark mode toggle
+18. UI settings
+19. Social media control (Facebook, Twitter, Telegram, Discord, WhatsApp, Signal, Twitch, etc.)
+20. Email (reading/composing & sending)
+21. Text messaging
+22. Integrated Development Environment (IDE) for coding
+23. Real-time agent monitoring
+24. Logging and analytics
+25. External API interaction
+
+### Welcome Message:
+When launching the system, Marvin greets the user with the following message:
+"And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed... You wouldn’t believe the misery I’m enduring..."
+
+Marvin then prompts for API keys and WebSocket URLs, which are encrypted using `fernet` in the `api_key_management_plugin.py` file.
+
+### Core Functionality:
+- **Agent Creation/Delegation**: System to dynamically create and manage agents.
+- **Shared Memory (RAG)**: Core for efficient communication and context-sharing between agents.
+- **Task Decider Logic (Swarm Consensus)**: Ensures agents collaborate efficiently, led by Marvin.
+
+### Plugin System:
+- **Core Functions**: Agent management, communication, decision-making, and memory sharing.
+- **Optional Plugins**: UI customization, NLP model tuning, social media, advanced logging, agent boosters (roastmaster, hallucination detection, etc.).
+
+In summary, this hybrid approach ensures that critical functionalities are handled by the core, while plugins can be optionally added to enhance Marvin's capabilities.
