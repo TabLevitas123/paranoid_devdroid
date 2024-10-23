@@ -1,12 +1,13 @@
 
 def setup():
     print("Welcome to Marvin Setup!")
-    
-    # Original prompts for other APIs (let's assume AWS and Dorkle were part of the original setup)
+    print("Marvin is here to assist you with every step of your AI journey.")
+
+    # Original prompts for API keys or other configurations (assuming AWS RDS and Dorkle API were already in place)
     aws_rds_key = input("Please enter your AWS RDS Key: ")
     dorkle_api_key = input("Please enter your Dorkle API Key: ")
 
-    # New prompts for additional API Keys
+    # Adding the new API prompts for OpenAI, Clearbit, Numverify, and IPStack
     openai_api_key = input("Please enter your OpenAI API Key: ")
     clearbit_api_key = input("Please enter your Clearbit API Key: ")
     numverify_api_key = input("Please enter your Numverify API Key: ")
@@ -21,7 +22,7 @@ def setup():
         f.write(f"NUMVERIFY_API_KEY={numverify_api_key}\n")
         f.write(f"IPSTACK_API_KEY={ipstack_api_key}\n")
 
-    print("Setup complete! Your API keys are saved.")
+    print("Setup complete! Marvin is now ready to assist with full verification capabilities.")
 
 if __name__ == "__main__":
     setup()
