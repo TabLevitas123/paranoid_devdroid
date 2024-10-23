@@ -4,6 +4,7 @@ name: Weekly Health Check
 on:
   schedule:
     - cron: "0 12 * * 1"  # Runs every Monday at 12 PM
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   check-health:
@@ -24,7 +25,7 @@ jobs:
 
     - name: Run health check
       run: |
-        python health_check.py  # Custom script to check system health and report errors
+        python health_check.py
 
     - name: Send Slack Notification on Failure
       if: failure()
