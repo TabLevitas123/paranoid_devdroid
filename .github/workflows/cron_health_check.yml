@@ -26,12 +26,3 @@ jobs:
     - name: Run health check
       run: |
         python health_check.py
-
-    - name: Send Slack Notification on Failure
-      if: failure()
-      uses: slackapi/slack-github-action@v1.20.0
-      with:
-        channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-        slack-message: "Error encountered during the health check. Check logs for details."
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
