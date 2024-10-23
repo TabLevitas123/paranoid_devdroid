@@ -1,0 +1,32 @@
+{
+    "apis": [
+        {
+            "name": "OpenAI",
+            "key": "OpenAI API Key"
+        },
+        {
+            "name": "Anthropic",
+            "key": "Anthropic API Key"
+        },
+        {
+            "name": "Meta",
+            "key": "Meta API Key"
+        },
+        {
+            "name": "Hugging Face",
+            "key": "Hugging Face API Key"
+        },
+        {
+            "name": "Azure",
+            "key": "Azure API Key"
+        },
+        {
+            "name": "Amazon S3",
+            "key": "Amazon S3 API Key"
+        },
+        {
+            "name": "Vertex AI",
+            "key": "Vertex AI API Key"
+        }
+    ]
+}
