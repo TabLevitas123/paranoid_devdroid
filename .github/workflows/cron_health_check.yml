@@ -23,6 +23,10 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    - name: List directory contents for debugging
+      run: |
+        ls -la  # This will list all files to ensure health_check.py exists and is accessible
+
     - name: Run health check
       run: |
-        python health_check.py
+        python ./health_check.py  # Ensure the correct path is used to execute the script
