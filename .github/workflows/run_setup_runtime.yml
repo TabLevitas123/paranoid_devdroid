@@ -34,11 +34,3 @@ jobs:
           eof
         }
         EOF
-
-    - name: Run main.py
-      run: |
-        python main.py
-
-    - name: Run app.py
-      run: |
-        python app.py
