@@ -1,11 +1,12 @@
 
 import psycopg2
+import os
 
-# AWS RDS Database details
-aws_host = "YOUR_AWS_HOST"
-aws_dbname = "YOUR_DB_NAME"
-aws_user = "YOUR_DB_USER"
-aws_password = "YOUR_DB_PASSWORD"
+# AWS RDS Database details from environment variables
+aws_host = os.getenv('AWS_RDS_HOST')
+aws_dbname = os.getenv('AWS_RDS_DBNAME')
+aws_user = os.getenv('AWS_RDS_USER')
+aws_password = os.getenv('AWS_RDS_PASSWORD')
 
 # Attempt to connect to the AWS RDS PostgreSQL instance
 try:
