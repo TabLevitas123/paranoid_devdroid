@@ -1,3 +1,3 @@
 
-    Added Task Workflow History and Learning Base system, allowing agents to log task executions and retrieve relevant historical data for future learning.
+    Added Task Simulation Environment system, allowing agents to simulate different task execution scenarios and evaluate potential outcomes before making decisions.
     
