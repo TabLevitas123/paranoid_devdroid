@@ -1,4 +1,7 @@
 
-Renamed Toastmaster to Roastmaster:
-1. Roastmaster: Includes advanced natural language understanding, adaptive communication strategies, and multimodal communication capabilities.
-2. Interrogator: Enhanced with deep contextual analysis, real-time query optimization, and strategic questioning capabilities for improved decision-making.
+Enhanced the Roastmaster to version 2.0:
+1. Personality-Driven Responses: The Roastmaster now responds with wit, sarcasm, and humor.
+2. Dynamic Tone Adjustment: Adjusts roast intensity based on user mood and interaction context.
+3. Humor Engine: Generates witty comebacks and playful roasts in real-time.
+4. Sentiment Analysis: Detects user sentiment to ensure playful and appropriate roast intensity.
+5. Interactive Game Mode: Engages users in a friendly roast battle with humorous back-and-forth exchanges.
