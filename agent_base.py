@@ -1,5 +1,6 @@
 
 import random
+import logging
 
 class Agent:
     def __init__(self, name, task):
@@ -28,12 +29,38 @@ class HallucinationMonitor(Agent):
     def __init__(self, name, task, hallucination_threshold=0.1):
         super().__init__(name, task)
         self.hallucination_threshold = hallucination_threshold
+        self.hallucination_count = 0
+        self.log = []
 
-    def detect_hallucination(self, agent_decision):
-        # Check whether the agent decision crosses the hallucination threshold
-        if random.random() > self.hallucination_threshold:
-            print(f"Agent {self.name} detected a hallucination in decision: {agent_decision}")
+    def detect_hallucination(self, task_outcome):
+        # Anomaly detection based on a random threshold (can be enhanced further)
+        if random.random() < self.hallucination_threshold:
+            self.hallucination_count += 1
+            self.log_hallucination(task_outcome)
+            self.correct_hallucination()
             return True
         return False
 
-# Additional refactoring for other components can follow
+    def log_hallucination(self, task_outcome):
+        # Log the hallucination details with severity levels
+        severity = "Critical" if self.hallucination_count > 3 else "Minor"
+        log_entry = {
+            "agent": self.name,
+            "task": self.task,
+            "outcome": task_outcome,
+            "severity": severity,
+            "hallucination_count": self.hallucination_count
+        }
+        self.log.append(log_entry)
+        logging.info(f"Hallucination detected: {log_entry}")
+
+    def correct_hallucination(self):
+        # Corrective mechanism: Reassess or seek external validation
+        print(f"{self.name} is correcting hallucination...")
+        self.task = "Re-evaluated task after hallucination"
+
+# Example usage
+if __name__ == "__main__":
+    monitor = HallucinationMonitor(name="Hallucination Monitor", task="Monitor for hallucinations")
+    for _ in range(10):
+        monitor.detect_hallucination("Task outcome XYZ")
