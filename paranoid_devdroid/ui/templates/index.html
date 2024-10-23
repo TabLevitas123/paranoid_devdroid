@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paranoid DevDroid - Task Manager</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+        }
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+        .task-list {
+            margin-top: 20px;
+        }
+        .task {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .dark-mode .task {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body id="body">
+    <h1>Paranoid DevDroid Task Manager</h1>
+
+    <form method="POST" action="/">
+        <input type="text" name="task" placeholder="Enter a new task">
+        <button type="submit">Submit Task</button>
+    </form>
+
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <div class="task-list">
+        <h2>Submitted Tasks</h2>
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="task">{{ task }}</div>
+            {% endfor %}
+        {% else %}
+            <p>No tasks submitted yet.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            var body = document.getElementById('body');
+            body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
