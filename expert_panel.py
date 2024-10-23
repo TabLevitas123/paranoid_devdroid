@@ -12,9 +12,17 @@ class ExpertPanel(Agent):
             expert_responses.append(expert_response)
             self.communicate(f"{expert.name} says: {expert_response}")
         
-        # Collect responses and form a consensus (for now, just pick the first response)
-        consensus = expert_responses[0]  # Simplified decision logic for now
+        # Form consensus based on multiple opinions (placeholder logic)
+        if len(expert_responses) > 1:
+            consensus = self.form_consensus(expert_responses)
+        else:
+            consensus = expert_responses[0]
+        
         return consensus
+
+    def form_consensus(self, opinions):
+        # Simple logic to form a consensus (can be expanded with more complex algorithms)
+        return opinions[0]  # Placeholder for now
 
 class Expert:
     def __init__(self, name, expertise):
@@ -22,15 +30,5 @@ class Expert:
         self.expertise = expertise
 
     def give_opinion(self, problem):
-        # Provide an opinion based on expertise (placeholder logic)
-        return f"As an expert in {self.expertise}, I believe the solution to '{problem}' is straightforward."
-
-# Example usage
-if __name__ == "__main__":
-    expert1 = Expert(name="Dr. Ada Lovelace", expertise="Mathematics and Computing")
-    expert2 = Expert(name="Nikola Tesla", expertise="Electricity and Engineering")
-    expert_panel = ExpertPanel(name="Expert Panel", task="Solve complex problems", experts=[expert1, expert2])
-
-    # Have the panel deliberate on a problem
-    decision = expert_panel.deliberate("How to optimize this AI model")
-    print(f"Expert Panel's consensus: {decision}")
+        # Provide an opinion based on expertise (can be expanded to simulate deeper expert knowledge)
+        return f"As an expert in {self.expertise}, I believe the best approach is to handle: {problem}."
