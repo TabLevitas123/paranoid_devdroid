@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvin's Task Manager</title>
+</head>
+<body>
+    <h1>Welcome to Marvin's Task Manager</h1>
+    <p>{{ marvin_intro }}</p>
+    
+    <form action="/submit_task" method="POST">
+        <label for="task_input">Please insert task:</label><br>
+        <textarea id="task_input" name="task_input" rows="4" cols="50" placeholder="Enter your task here..."></textarea><br><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Clear">
+    </form>
+
+    {% if response %}
+        <p><strong>Response:</strong> {{ response }}</p>
+    {% endif %}
+</body>
+</html>
