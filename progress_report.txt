@@ -1,4 +1,4 @@
 
-    Integrated meta-learning and Q-learning algorithms into Paranoid_DevDroid agents.
-    Meta-learning allows agents to adapt based on past task outcomes, while Q-learning optimizes their actions for better decision-making.
+    Integrated LLM-based intelligence into Paranoid_DevDroid agents.
+    Agents now communicate with LLMs for task execution, decision-making, and memory-based reasoning.
     
