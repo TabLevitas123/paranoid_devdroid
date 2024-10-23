@@ -30,14 +30,20 @@ class HallucinationMonitor(Agent):
         super().__init__(name, task)
         self.hallucination_threshold = hallucination_threshold
         self.hallucination_count = 0
+        self.successful_corrections = 0
+        self.failed_corrections = 0
+        self.learning_rate = 0.1  # Meta-learning rate
         self.log = []
 
     def detect_hallucination(self, task_outcome):
-        # Anomaly detection based on a random threshold (can be enhanced further)
+        # Anomaly detection with threshold adjustments based on past learning
         if random.random() < self.hallucination_threshold:
             self.hallucination_count += 1
             self.log_hallucination(task_outcome)
-            self.correct_hallucination()
+            if self.correct_hallucination():
+                self.update_threshold(success=True)
+            else:
+                self.update_threshold(success=False)
             return True
         return False
 
@@ -57,7 +63,25 @@ class HallucinationMonitor(Agent):
     def correct_hallucination(self):
         # Corrective mechanism: Reassess or seek external validation
         print(f"{self.name} is correcting hallucination...")
-        self.task = "Re-evaluated task after hallucination"
+        # Randomly decide if the correction was successful for simulation purposes
+        correction_successful = random.random() > 0.5
+        if correction_successful:
+            self.successful_corrections += 1
+            print(f"{self.name} successfully corrected the hallucination!")
+            return True
+        else:
+            self.failed_corrections += 1
+            print(f"{self.name} failed to correct the hallucination.")
+            return False
+
+    def update_threshold(self, success):
+        # Meta-learning: Adjust the hallucination threshold based on success/failure
+        if success:
+            self.hallucination_threshold = max(0.05, self.hallucination_threshold - self.learning_rate)
+        else:
+            self.hallucination_threshold = min(0.5, self.hallucination_threshold + self.learning_rate)
+
+        print(f"Updated hallucination threshold: {self.hallucination_threshold}")
 
 # Example usage
 if __name__ == "__main__":
