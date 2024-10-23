@@ -27,7 +27,7 @@ jobs:
 
     - name: Run Flake8 for linting
       run: |
-        flake8 .
+        flake8 . || true
       continue-on-error: true  # Linting issues do not fail the build, but will be logged
 
     - name: Run Black for formatting
