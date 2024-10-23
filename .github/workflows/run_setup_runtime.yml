@@ -27,7 +27,7 @@ jobs:
     - name: Run setup_runtime.py with auto-skip for APIs
       run: |
         sudo apt-get install expect  # Install expect for simulating input
-        expect -c '
+        expect << EOF
         spawn python setup_runtime.py
         expect "Enter API Key or skip"
         send "skip"
@@ -36,7 +36,7 @@ jobs:
         expect "Enter API Key or skip"
         send "skip"
         expect eof
-        '
+        EOF
 
     - name: Run the program after setup
       run: |
