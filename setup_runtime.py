@@ -45,7 +45,7 @@ def save_encrypted_keys(keys, encryption_key):
         for service, key in keys.items():
             if key:  # Only save non-null values
                 encrypted_key = f.encrypt(key.encode())
-                file.write(f"{service}: {encrypted_key.decode()}
+                file.write(f "{service}: {encrypted_key.decode()}
 ".encode())
 
 # Encryption key generation (should be stored safely in production)
