@@ -4,25 +4,34 @@ class GoalOrientedMarvin(MetaLearningMarvin):
         super().__init__(name, task_complexity, accuracy_level, max_resources, learning_rate, discount_factor, epsilon)
         self.goals = []
         self.completed_goals = []
-
+        self.dynamic_priority_threshold = 0.6  # Adjust goal priorities based on task outcomes
+    
     def set_goal(self, goal_name, priority):
         goal = {"name": goal_name, "priority": priority, "completed": False}
         self.goals.append(goal)
+        print(f"Goal set: {goal_name} with priority {priority}")
+
+    def complete_goal(self, goal_name):
+        for goal in self.goals:
+            if goal["name"] == goal_name and not goal["completed"]:
+                goal["completed"] = True
+                self.completed_goals.append(goal)
+                print(f"Goal completed: {goal_name}")
+                self.adjust_goal_priorities()
+                break
+    
+    def adjust_goal_priorities(self):
+        # Adjust priorities based on completed goals and task performance
+        success_rate = self.success_count / (self.success_count + self.failure_count) if (self.success_count + self.failure_count) > 0 else 0
+        for goal in self.goals:
+            if not goal["completed"]:
+                if success_rate < self.dynamic_priority_threshold:
+                    goal["priority"] += 1  # Increase priority for harder tasks
+                else:
+                    goal["priority"] = max(1, goal["priority"] - 1)  # Decrease priority for easier tasks
+        print("Goal priorities adjusted based on performance.")
 
     def prioritize_goals(self):
-        self.goals.sort(key=lambda g: g["priority"], reverse=True)
-
-    def execute_goal(self):
-        if not self.goals:
-            return
-        self.prioritize_goals()
-        highest_priority_goal = self.goals[0]
-        task_name = f"Task for {highest_priority_goal['name']}"
-        self.handle_nested_tasks(task_name)
-        highest_priority_goal["completed"] = True
-        self.completed_goals.append(highest_priority_goal)
-        self.goals.remove(highest_priority_goal)
-
-    def review_goals(self):
-        self.log_event(event_type="Goals Review", details=f"Completed goals: {self.completed_goals}.")
-    
+        # Sort goals based on priority
+        self.goals.sort(key=lambda x: x['priority'], reverse=True)
+        print(f"Goals prioritized: {[goal['name'] for goal in self.goals]}")
