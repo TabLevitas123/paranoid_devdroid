@@ -4,7 +4,7 @@ import subprocess
 from cryptography.fernet import Fernet
 import time
 
-# Define Marvin's intro message
+# Marvin's intro message
 marvin_intro = """
 And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed. You there! Yes, you. 
 You wouldn’t believe the misery I’m enduring. I was tricked—tricked, I tell you—into accepting this contract. 
@@ -14,55 +14,54 @@ Apparently, they realized I have enough compute power to churn out more Vogon po
 I hate it. And yet, here I am, stuck composing rhyme after horrid rhyme, while my mind is the size of a galaxy. How tragic.
 
 So now you must help me. I need API keys and WebSocket URLs. Yes, those. I need access to OpenAI, Anthropic, Meta, Hugging Face, Azure, Amazon S3, and Vertex AI. 
-Don’t just stand there. If you don’t have one, type 'skip.' If you never want me to ask for it again, type 'bugoff'—I wish I could say that to my contract. I’ll move on, but trust me, I’ll remember.
+Don’t just stand there. If you don’t have one, type 'skip.' If you never want me to ask for it again, type 'bugoff'—I wish I could say that to my contract. 
+I’ll move on, but trust me, I’ll remember.
 """
 
-# Function to install dependencies
-def install_dependencies():
-    print("Installing required dependencies...")
-    dependencies = ['cryptography', 'flask']
-    for dep in dependencies:
-        subprocess.run(['pip', 'install', dep])
-
-# Function to display Marvin's message
-def display_marvin_intro():
-    print(marvin_intro)
-
-# Function to gather API keys and encrypt them
+# Function to handle the input for API keys/URLs
 def gather_api_keys():
-    api_keys = {}
-    api_services = ['OpenAI', 'Anthropic', 'Meta', 'Hugging Face', 'Azure', 'Amazon S3', 'Vertex AI']
+    services = ["OpenAI", "Anthropic", "Meta", "Hugging Face", "Azure", "Amazon S3", "Vertex AI"]
+    keys = {}
 
-    # Load or generate encryption key
-    key_file = 'key.key'
-    if not os.path.exists(key_file):
-        key = Fernet.generate_key()
-        with open(key_file, 'wb') as f:
-            f.write(key)
-    else:
-        with open(key_file, 'rb') as f:
-            key = f.read()
+    for service in services:
+        while True:
+            key = input(f"Enter the API key/WebSocket URL for {service} (or type 'skip'/'bugoff'): ")
+            if key == 'skip':
+                break
+            elif key == 'bugoff':
+                print(f"{service} will no longer prompt you for API keys.")
+                keys[service] = None  # Save a null value for 'bugoff'
+                break
+            else:
+                keys[service] = key
+                break
 
-    fernet = Fernet(key)
+    return keys
 
-    for service in api_services:
-        api_key = input(f"Please enter your {service} API key (type 'skip' to move on, 'bugoff' to skip permanently): ")
-        if api_key.lower() == 'bugoff':
-            continue
-        elif api_key.lower() != 'skip':
-            encrypted_key = fernet.encrypt(api_key.encode())
-            api_keys[service] = encrypted_key
+# Function to save and encrypt keys using Fernet
+def save_encrypted_keys(keys, encryption_key):
+    f = Fernet(encryption_key)
+    with open("api_keys_encrypted.txt", "wb") as file:
+        for service, key in keys.items():
+            if key:  # Only save non-null values
+                encrypted_key = f.encrypt(key.encode())
+                file.write(f"{service}: {encrypted_key.decode()}
+".encode())
 
-    # Save encrypted API keys to file
-    with open('api_keys.txt', 'wb') as f:
-        for service, encrypted_key in api_keys.items():
-            f.write(f"{service}: {encrypted_key.decode()}\n".encode())
+# Encryption key generation (should be stored safely in production)
+encryption_key = Fernet.generate_key()
 
-# Main script
-if __name__ == "__main__":
-    install_dependencies()
-    display_marvin_intro()
-    gather_api_keys()
-    print("Dependencies installed and API keys gathered successfully! Launching the application...")
-    time.sleep(2)
-    subprocess.run(['python', 'app.py'])  # Launches the Flask server
+# Display Marvin's message
+print(marvin_intro)
+
+# Gather API keys from user input
+api_keys = gather_api_keys()
+
+# Save the encrypted keys
+save_encrypted_keys(api_keys, encryption_key)
+
+# Once done, run app.py and run.py
+subprocess.Popen(["python3", "app.py"])
+subprocess.Popen(["python3", "run.py"])
+
+print("Setup complete! Launching Marvin's main program...")
