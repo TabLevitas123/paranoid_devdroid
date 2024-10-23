@@ -1,26 +1,45 @@
 
-class MarvinAgent:
-    def __init__(self, name, task_complexity):
-        self.name = name
-        self.task_complexity = task_complexity
-        self.sub_agents = []
+import random
+import numpy as np
 
-    def assess_task(self):
-        if self.task_complexity > 5:
-            print(f"{self.name} says: Task too complex, need sub-agents!")
-            self.create_sub_agents(self.task_complexity // 5)
+class SubAgentCreator:
+    def __init__(self, max_agents=5):
+        self.max_agents = max_agents
+        self.q_table = np.zeros((self.max_agents, 2))  # Q-table for agent creation (5 agents, 2 actions: create or defer)
+        self.gamma = 0.9  # Discount factor for future rewards
+        self.learning_rate = 0.1
+        self.agent_efficiency = np.random.rand(self.max_agents)  # Simulated efficiency scores for agents
+
+    def decide_agent_creation(self):
+        for agent_id in range(self.max_agents):
+            if random.random() < self.agent_efficiency[agent_id]:
+                reward = self.create_agent(agent_id)
+            else:
+                reward = self.defer_agent_creation(agent_id)
+
+            self.update_q_table(agent_id, reward)
+
+    def create_agent(self, agent_id):
+        print(f"Creating sub-agent {agent_id}...")
+        # Simulate agent creation success or failure
+        creation_success = random.random() < self.agent_efficiency[agent_id]
+        if creation_success:
+            print(f"Sub-agent {agent_id} created successfully.")
+            return 1  # Reward for Q-Learning
         else:
-            print(f"{self.name} can handle the task without sub-agents!")
+            print(f"Sub-agent {agent_id} creation failed.")
+            return -1  # Penalty for Q-Learning
 
-    def create_sub_agents(self, num_sub_agents):
-        for i in range(num_sub_agents):
-            sub_agent = MarvinAgent(name=f"Sub-Agent-{i + 1}", task_complexity=self.task_complexity / (i + 1))
-            self.sub_agents.append(sub_agent)
-            print(f"{self.name} created {sub_agent.name} for task delegation.")
+    def defer_agent_creation(self, agent_id):
+        print(f"Deferring creation of sub-agent {agent_id}...")
+        return 0  # Neutral action for Q-Learning
 
-    def execute_task(self):
-        if self.sub_agents:
-            for sub_agent in self.sub_agents:
-                sub_agent.execute_task()
-        else:
-            print(f"{self.name} is executing the task solo!")
+    def update_q_table(self, agent_id, reward):
+        action = 0 if reward > 0 else 1  # 0 for create, 1 for defer
+        self.q_table[agent_id, action] += self.learning_rate * (reward + self.gamma * np.max(self.q_table[agent_id]) - self.q_table[agent_id, action])
+        print(f"Updated Q-table for agent {agent_id}: {self.q_table[agent_id]}")
+
+# Example usage
+if __name__ == "__main__":
+    sub_agent_creator = SubAgentCreator()
+    sub_agent_creator.decide_agent_creation()
