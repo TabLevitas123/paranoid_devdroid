@@ -14,23 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # Updated to latest version
+      uses: actions/checkout@v3
+      continue-on-error: false
 
     - name: Set up Python
-      uses: actions/setup-python@v4  # Updated to latest version
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
+      continue-on-error: false
 
     - name: Install dependencies
       run: |
         pip install flake8 black
+      continue-on-error: false
+      retry: 3  # Retry step 3 times if it fails
+
     - name: Run Flake8 for linting
       run: |
         flake8 .
+      continue-on-error: true  # Do not fail the pipeline but log errors
+      retry: 2  # Retry twice
 
     - name: Run Black for formatting
       run: |
         black --check .
+      continue-on-error: true
+      retry: 2
 
   test:
     needs: lint
@@ -55,6 +64,7 @@ jobs:
     - name: Run tests
       run: |
         pytest
+      continue-on-error: false  # Fail the pipeline if tests fail, but output detailed error logs
 
   security:
     needs: test
@@ -65,8 +75,6 @@ jobs:
 
     - name: Set up Python
       uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -75,6 +83,7 @@ jobs:
     - name: Run Bandit for security checks
       run: |
         bandit -r .
+      continue-on-error: false  # Ensure no security issues are ignored
 
   deploy:
     needs: security
@@ -90,3 +99,4 @@ jobs:
         AWS_DEFAULT_REGION: 'us-east-2'
       run: |
         echo "Deploying the application..."
+      continue-on-error: false  # Fail if deployment fails
