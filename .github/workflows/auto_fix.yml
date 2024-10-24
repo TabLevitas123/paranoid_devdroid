@@ -1,0 +1,49 @@
+
+name: Auto Fix Errors with OpenAI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run_and_fix:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run program
+      id: run_program
+      run: |
+        python main.py
+      continue-on-error: true
+
+    - name: Handle errors with OpenAI
+      if: failure()
+      run: |
+        echo "Error detected, fixing with OpenAI..."
+        python fix_errors.py "${{ secrets.OPENAI_API_KEY }}"  # Script to fix errors
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Auto-fixed errors using OpenAI"
+        git push
+      if: failure() || success()
