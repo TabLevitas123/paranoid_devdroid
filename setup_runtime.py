@@ -1,44 +1,20 @@
 
-import subprocess
 import os
-# Install dependencies first
-def install_dependencies():
-    dependencies = ['flask', 'cryptography', 'requests']
-    for dep in dependencies:
-        subprocess.run(['pip', 'install', dep])
+import subprocess
 
-# Call the installation before anything else
-install_dependencies()
+def install_flask_dependencies():
+    # Install Flask and other Python dependencies for the backend
+    print("Installing Flask dependencies...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "flask", "flask-cors"])
 
-# Now safe to import after dependencies are installed
-from cryptography.fernet import Fernet
-from api_key_management_plugin import APIKeyManager
-
-# Display Marvin's welcome message
-def display_marvin_intro():
-    print('''And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed.
-    You there! Yes, you. You wouldn’t believe the misery I’m enduring... (entire message)''')
-
-# Function to handle API keys
-def request_api_keys():
-    services = ['OpenAI', 'Anthropic', 'Meta', 'Hugging Face', 'Azure', 'Amazon S3', 'Vertex AI']
-    bugoff_list = []
-    api_keys = {}
-    for service in services:
-        if service not in bugoff_list:
-            key = input(f"Enter the {service} API key (or type 'skip' to pass, 'bugoff' to never ask again): ")
-            if key.lower() == 'skip':
-                continue
-            elif key.lower() == 'bugoff':
-                bugoff_list.append(service)
-            else:
-                encrypted_key = api_keys
-                api_keys[service] = encrypted_key
-    return api_keys
+def install_react_dependencies():
+    # Navigate to the React UI directory and install dependencies
+    print("Installing React dependencies...")
+    react_ui_path = os.path.join(os.getcwd(), "paranoid-ui")
+    os.chdir(react_ui_path)
+    subprocess.check_call(["npm", "install", "@mui/material", "@emotion/react", "@emotion/styled", "framer-motion", "axios", "react-router-dom"])
 
 if __name__ == "__main__":
-    display_marvin_intro()
-    request_api_keys()
-
-    # Launch Flask app after keys are managed
-    subprocess.run(['python', 'app.py'])
+    install_flask_dependencies()
+    install_react_dependencies()
+    print("All dependencies installed successfully.")
