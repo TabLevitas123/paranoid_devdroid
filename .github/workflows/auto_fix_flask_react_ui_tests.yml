@@ -38,7 +38,7 @@ jobs:
     - name: Set up Node.js for React tests
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '18'
 
     - name: Install React dependencies
       run: |
