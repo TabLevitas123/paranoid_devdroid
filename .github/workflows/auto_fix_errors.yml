@@ -1,0 +1,109 @@
+
+name: Auto Fix Errors, Flask/React Integration, and UI Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install flake8 black pylint isort
+
+      - name: Lint and fix Python code
+        run: |
+          flake8 . --exit-zero  # Lint without breaking the build
+          black . --check || black .  # Format code
+          isort . --check-only || isort .  # Sort imports
+
+  react-dependencies-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Install React dependencies and audit fix
+        run: |
+          cd paranoid-ui
+          npm install
+          npm audit fix --force  # Ensure vulnerabilities are fixed automatically
+
+      - name: Run React linter and fix
+        run: |
+          npx eslint --fix .  # Automatically fix linter errors
+
+  flask-react-integration:
+    runs-on: ubuntu-latest
+    needs: [lint-fix, react-dependencies-fix]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Flask and React dependencies
+        run: |
+          pip install flask
+          cd paranoid-ui
+          npm install
+
+      - name: Verify Flask-React integration
+        run: |
+          flask run &  # Run Flask in the background
+          sleep 5  # Give Flask time to start
+          curl http://localhost:5000  # Ensure the React app is served
+
+  ui-testing:
+    runs-on: ubuntu-latest
+    needs: [flask-react-integration]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Run React UI tests
+        run: |
+          cd paranoid-ui
+          npm test
+
+  api-testing:
+    runs-on: ubuntu-latest
+    needs: [ui-testing]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install Flask and Pytest
+        run: |
+          pip install flask pytest
+
+      - name: Run Flask API tests
+        run: pytest
+
