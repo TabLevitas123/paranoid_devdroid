@@ -15,6 +15,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: dependencies
+      run: |
+        sudo apt-get upgrade
+        sudo apt-get expect
+
     - name: Run setup_runtime.py and auto-skip any prompt
       run: |
         expect << EOF
