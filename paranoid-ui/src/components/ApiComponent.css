@@ -1,0 +1,33 @@
+
+.api-content {
+  background-color: #f0f0f0;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.api-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.api-content ul {
+  list-style: none;
+}
+
+.api-content li {
+  margin-bottom: 1.5rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.api-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.api-content p {
+  font-size: 1rem;
+}
