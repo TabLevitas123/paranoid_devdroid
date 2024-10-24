@@ -15,18 +15,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-
     - name: Run setup_runtime.py and auto-skip any prompt
       run: |
-        sudo apt-get install expect  # Install expect for simulating input
         expect << EOF
         spawn python setup_runtime.py
         expect {
