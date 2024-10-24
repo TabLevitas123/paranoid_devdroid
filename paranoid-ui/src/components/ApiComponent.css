@@ -28,6 +28,9 @@
   margin-bottom: 0.5rem;
 }
 
-.api-content p {
-  font-size: 1rem;
+.spinner {
+  font-size: 1.5rem;
+  color: #007bff;
+  text-align: center;
+  padding: 1rem;
 }
