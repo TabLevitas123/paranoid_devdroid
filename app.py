@@ -1,17 +1,20 @@
 
-from flask import Flask, render_template, request
+import webbrowser
+from threading import Timer
+from flask import Flask
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
+# Flask route
+@app.route('/')
 def index():
-    if request.method == "POST":
-        task = request.form["task"]
-        with open("task_submissions.txt", "a") as task_file:
-            task_file.write(f"{task}\n")
-        return render_template("index.html", message="Task submitted successfully!")
-    
-    return render_template("index.html")
+    return "Hello, Flask is running!"
 
+# Function to launch browser
+def open_browser():
+    webbrowser.open_new('http://127.0.0.1:5000/')
+
+# Start the Flask server with automatic browser opening
 if __name__ == "__main__":
-    app.run(debug=True)
+    Timer(1, open_browser).start()
+    app.run()
