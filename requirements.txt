@@ -11,7 +11,6 @@ openai==0.27.0
 pandas
 psycopg2
 react
-react-dom
 requests
 scipy
 selenium==4.5.0
