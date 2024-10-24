@@ -14,5 +14,5 @@ react
 requests
 scipy
 selenium==4.5.0
-sklearn
+scikit-learn
 webdriver-manager==3.8.5
