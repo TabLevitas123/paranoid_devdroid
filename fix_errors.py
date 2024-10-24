@@ -5,24 +5,30 @@ import shutil
 import os
 import time
 import subprocess
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
+import logging
+
+# Setup logging for detailed output
+logging.basicConfig(filename='fix_errors.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Install dependencies (only if needed)
 def install_dependencies():
-    # Check and install Python (Flask) dependencies
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-    
-    # Check and install Node.js (React) dependencies
-    if not os.path.exists('node_modules'):
-        subprocess.check_call(['npm', 'install'])
-    
-    # Install Selenium and ChromeDriver for frontend testing
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "selenium", "webdriver-manager"])
+    try:
+        # Check and install Python (Flask) dependencies
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+        
+        # Check and install Node.js (React) dependencies
+        if not os.path.exists('node_modules'):
+            subprocess.check_call(['npm', 'install'])
+        
+        # Install Selenium and ChromeDriver for frontend testing
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "selenium", "webdriver-manager"])
+        logging.info("Dependencies installed successfully.")
+        
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Dependency installation failed: {e}")
+        sys.exit(1)
 
-# Install dependencies before proceeding (will only install if necessary)
+# Install dependencies before proceeding
 install_dependencies()
 
 # OpenAI API key is passed as the first argument to the script
@@ -30,15 +36,24 @@ api_key = sys.argv[1]
 
 # Define the files that need to be fixed
 flask_file = 'app.py'  # Example Flask entry point
-react_file = 'src/index.js'  # Example React entry point
+react_file = 'paranoid-ui/src/index.js'  # Example React entry point
 
 # Backup the original files before making changes
-shutil.copy(flask_file, f'{flask_file}.bak')
-shutil.copy(react_file, f'{react_file}.bak')
+try:
+    shutil.copy(flask_file, f'{flask_file}.bak')
+    shutil.copy(react_file, f'{react_file}.bak')
+    logging.info(f"Backup of {flask_file} and {react_file} created successfully.")
+except Exception as e:
+    logging.error(f"Failed to create backup: {e}")
+    sys.exit(1)
 
 # Load the error log from the failed run
-with open('error_log.txt', 'r') as f:
-    error_message = f.read()
+try:
+    with open('error_log.txt', 'r') as f:
+        error_message = f.read()
+except FileNotFoundError:
+    logging.error("Error log not found. Please ensure 'error_log.txt' exists.")
+    sys.exit(1)
 
 # Initialize the OpenAI API
 openai.api_key = api_key
@@ -50,83 +65,58 @@ success = False
 
 while attempt < max_retries and not success:
     attempt += 1
-    print(f"Attempt {attempt} to fix the error...")
+    logging.info(f"Attempt {attempt} to fix the error...")
 
-    # Create the prompt to ask OpenAI how to fix the error
-    prompt = f'I encountered the following error while running a Flask and React app:\n\n{error_message}\n\nHow can I fix this issue? Please provide the exact code to modify or add for both Flask and React.'
+    try:
+        # Create the prompt to ask OpenAI how to fix the error
+        prompt = f'I encountered the following error while running a Flask and React app:\n\n{error_message}\n\nHow can I fix this issue? Please provide the exact code to modify or add for both Flask and React.'
 
-    # Call OpenAI API to generate the fix
-    response = openai.Completion.create(
-      engine="text-davinci-003",
-      prompt=prompt,
-      max_tokens=500,
-      temperature=0
-    )
+        # Call OpenAI API to generate the fix
+        response = openai.Completion.create(
+          engine="text-davinci-003",
+          prompt=prompt,
+          max_tokens=500,
+          temperature=0
+        )
 
-    # Extract the suggested fix from the response
-    fix = response.choices[0].text.strip()
+        # Extract the suggested fix from the response
+        fix = response.choices[0].text.strip()
 
-    # Save the fix to a file for logging purposes
-    with open('suggested_fix.txt', 'a') as f:
-        f.write(f"Attempt {attempt} Fix:\n" + fix + "\n")
+        # Save the fix to a file for logging purposes
+        with open('suggested_fix.txt', 'a') as f:
+            f.write(f"Attempt {attempt} Fix:\n" + fix + "\n")
 
-    # Print the fix for debugging
-    print(f"Suggested fix (Attempt {attempt}):", fix)
+        logging.info(f"Suggested fix (Attempt {attempt}): {fix}")
 
-    # Apply the fix by appending it to the Flask and React files
-    with open(flask_file, 'a') as f:
-        f.write(f"\n# Fix generated by OpenAI (Attempt {attempt}):\n" + fix)
-    
-    with open(react_file, 'a') as f:
-        f.write(f"\n// Fix generated by OpenAI (Attempt {attempt}):\n" + fix)
-
-    print(f"Fix applied to {flask_file} and {react_file} (Attempt {attempt})")
-
-    # Re-run Flask and React apps to see if the fix worked
-    flask_process = subprocess.Popen(["python", flask_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    react_process = subprocess.Popen(["npm", "start"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    flask_exit_code = flask_process.wait()
-    react_exit_code = react_process.wait()
-
-    # If either Flask or React still fails, notify the user and retry
-    if flask_exit_code != 0 or react_exit_code != 0:
-        print(f"Flask or React failed. Retrying after a short delay...")
-        time.sleep(5)  # Wait for 5 seconds before retrying
-    else:
-        print("Flask and React apps ran successfully after applying the fix!")
-
-        # Setup Selenium for interaction testing
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        # Apply the fix by appending it to the Flask and React files
+        with open(flask_file, 'a') as f:
+            f.write(f"\n# Fix generated by OpenAI (Attempt {attempt}):\n" + fix)
         
-        # Launch the React app in browser
-        driver.get('http://localhost:3000')  # Assuming React is running on localhost:3000
+        with open(react_file, 'a') as f:
+            f.write(f"\n// Fix generated by OpenAI (Attempt {attempt}):\n" + fix)
 
-        # Simulate a user inputting data into a form and clicking the submit button
-        print("Simulating user interactions with the React app...")
+        logging.info(f"Fix applied to {flask_file} and {react_file} (Attempt {attempt})")
 
-        try:
-            # Locate input fields and buttons by their IDs or class names
-            input_field = driver.find_element(By.ID, 'user-input')  # Example input field
-            submit_button = driver.find_element(By.ID, 'submit-btn')  # Example submit button
-            
-            # Enter text and submit form
-            input_field.send_keys("Test input")
-            submit_button.click()
+        # Re-run Flask and React apps to see if the fix worked
+        flask_process = subprocess.Popen(["python", flask_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        react_process = subprocess.Popen(["npm", "start", "--prefix", "paranoid-ui"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-            # Test other buttons (replace with actual button IDs or class names)
-            other_button = driver.find_element(By.ID, 'another-btn')
-            other_button.click()
+        flask_exit_code = flask_process.wait()
+        react_exit_code = react_process.wait()
 
-            print("User interaction tests completed successfully!")
+        # If either Flask or React still fails, log the failure and retry
+        if flask_exit_code != 0 or react_exit_code != 0:
+            logging.error(f"Flask or React failed. Flask exit code: {flask_exit_code}, React exit code: {react_exit_code}")
+            time.sleep(5)  # Wait for 5 seconds before retrying
+        else:
+            logging.info("Flask and React apps ran successfully after applying the fix!")
+            success = True
 
-        except Exception as e:
-            print(f"Failed to complete user interaction tests: {e}")
-
-        driver.quit()  # Close the browser after testing
-
-        success = True
+    except Exception as e:
+        logging.error(f"An error occurred during attempt {attempt}: {e}")
+        time.sleep(5)
 
 # If we reach the maximum attempts without success, notify the user
 if not success:
-    print(f"Failed to fix the error after {max_retries} attempts. Check suggested_fix.txt for details.")
+    logging.error(f"Failed to fix the error after {max_retries} attempts. Check suggested_fix.txt for details.")
+    sys.exit(1)
