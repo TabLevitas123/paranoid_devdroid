@@ -17,15 +17,13 @@ jobs:
 
     - name: Install expect
       run: |
-        sudo apt-get update
-        sudo apt-get install -y expect
+        sudo apt-get expect
 
     - name: Run setup_runtime.py and auto-skip any prompt
       run: |
         expect << EOF
         spawn python setup_runtime.py
         expect {
-          -re ".*" { send "skip"; exp_continue }  # Sending "skip" followed by newline
-          eof
+          -re ".*" { send exp_continue ; exp_continue ; exp_continue ; exp_continue ; exp_continue ; exp_continue ; exp_continue }  # Sending "skip" followed by newline
         }
         EOF
