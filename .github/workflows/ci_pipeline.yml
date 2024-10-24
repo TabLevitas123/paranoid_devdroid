@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.9'  # Updated Python version to ensure compatibility
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -34,16 +34,16 @@ jobs:
           pip install flake8 black pylint bandit pytest
 
       - name: Run Flake8 for linting
-        run: flake8 . || true  # Ensures linter warnings don't fail the pipeline
+        run: flake8 .  # Removed error suppression
 
       - name: Run Pylint as fallback linter
-        run: pylint . || true  # If Flake8 fails, fallback to Pylint
+        run: pylint .  # Removed error suppression
 
       - name: Run Black for formatting check
-        run: black --check . || true  # Ensures formatting warnings don't fail the pipeline
+        run: black --check .  # Removed error suppression
 
       - name: Fallback format check (if Black fails)
-        run: isort --check-only . || true  # Uses isort as fallback if Black fails
+        run: isort --check-only .  # Removed error suppression
 
   security:
     runs-on: ubuntu-latest
@@ -54,10 +54,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Run Bandit security checks
-        run: bandit -r . || true  # Ensures security checks run but don't stop pipeline
+        run: bandit -r .  # Removed error suppression
 
   test:
     runs-on: ubuntu-latest
@@ -69,14 +69,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
           pip install pytest
 
       - name: Run tests with Pytest
-        run: pytest || true  # Ensures tests run but won't stop pipeline if they fail
+        run: pytest  # Removed error suppression
 
       - name: Fallback test runner (Nose2)
-        run: nose2 || true  # Fallback testing framework if pytest fails
+        run: nose2  # Removed error suppression
