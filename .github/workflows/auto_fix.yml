@@ -58,14 +58,21 @@ jobs:
         # After fixing, re-launch Flask/React apps and test
         python fix_errors.py "${{ secrets.MY_GITHUB_TOKEN }}"
 
-    - name: Commit changes
+    - name: Check for changes before committing
+      id: git_status
+      run: |
+        git status
+        git diff --exit-code || echo "Changes detected."
+
+    - name: Commit and push changes
+      if: success() && steps.git_status.outputs.changes_detected != ''
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
         git commit -m "Auto-fixed errors using OpenAI and tested with Selenium"
+        git pull --rebase  # Ensure we pull the latest changes before pushing
         git push
-      if: failure() || success()
 
     - name: Print Workflow Logs
       run: |
