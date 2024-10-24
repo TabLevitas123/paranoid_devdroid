@@ -1,8 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';  // Separate CSS file for scoped styling
 
 const Navbar = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark-theme', !darkMode);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -16,6 +23,9 @@ const Navbar = () => {
       <div className="navbar-toggle">
         <button className="toggle-button">Menu</button>
       </div>
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
     </nav>
   );
 };
