@@ -1,29 +1,17 @@
 
 from flask import Flask, render_template, request
-from marvin_orchestration import Marvin
 
 app = Flask(__name__)
 
-# Marvin initialization
-marvin = Marvin(name="Marvin", task="Orchestrate Agent Swarm")
-
-@app.route('/')
-def home():
-    return render_template('index.html', marvin_intro=marvin.task)
-
-@app.route('/submit_task', methods=['POST'])
-def submit_task():
-    user_task = request.form.get('task_input')
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        task = request.form["task"]
+        with open("task_submissions.txt", "a") as task_file:
+            task_file.write(f"{task}\n")
+        return render_template("index.html", message="Task submitted successfully!")
     
-    # Marvin processes the user's task
-    if user_task:
-        final_decision = marvin.decide(user_task)
-        response = f"Marvin's Decision: {final_decision}"
-        marvin.communication_protocol.display_message_log()  # Display communication logs in the console for now
-    else:
-        response = "Marvin says: Please provide a valid task."
+    return render_template("index.html")
 
-    return render_template('index.html', marvin_intro=marvin.task, response=response)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

@@ -1,28 +1,42 @@
 
-def setup():
-    print("Welcome to Marvin Setup!")
-    print("Marvin is here to assist you with every step of your AI journey.")
+import subprocess
+from cryptography.fernet import Fernet
+import os
+from api_key_management_plugin import encrypt_keys, store_encrypted_key
 
-    # Original prompts for API keys or other configurations (assuming AWS RDS and Dorkle API were already in place)
-    aws_rds_key = input("Please enter your AWS RDS Key: ")
-    dorkle_api_key = input("Please enter your Dorkle API Key: ")
+# Display Marvin's welcome message
+def display_marvin_intro():
+    print('''And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed.
+    You there! Yes, you. You wouldn’t believe the misery I’m enduring... (entire message)''')
 
-    # Adding the new API prompts for OpenAI, Clearbit, Numverify, and IPStack
-    openai_api_key = input("Please enter your OpenAI API Key: ")
-    clearbit_api_key = input("Please enter your Clearbit API Key: ")
-    numverify_api_key = input("Please enter your Numverify API Key: ")
-    ipstack_api_key = input("Please enter your IPStack API Key: ")
+# Install dependencies
+def install_dependencies():
+    dependencies = ['flask', 'cryptography', 'requests']
+    for dep in dependencies:
+        subprocess.run(['pip', 'install', dep])
 
-    # Save all API keys to environment or config (simulated here as writing to a file for simplicity)
-    with open('api_keys.txt', 'w') as f:
-        f.write(f"AWS_RDS_KEY={aws_rds_key}\n")
-        f.write(f"DORKLE_API_KEY={dorkle_api_key}\n")
-        f.write(f"OPENAI_API_KEY={openai_api_key}\n")
-        f.write(f"CLEARBIT_API_KEY={clearbit_api_key}\n")
-        f.write(f"NUMVERIFY_API_KEY={numverify_api_key}\n")
-        f.write(f"IPSTACK_API_KEY={ipstack_api_key}\n")
-
-    print("Setup complete! Marvin is now ready to assist with full verification capabilities.")
+# Function to handle API keys
+def request_api_keys():
+    services = ['OpenAI', 'Anthropic', 'Meta', 'Hugging Face', 'Azure', 'Amazon S3', 'Vertex AI']
+    bugoff_list = []
+    api_keys = {}
+    for service in services:
+        if service not in bugoff_list:
+            key = input(f"Enter the {service} API key (or type 'skip' to pass, 'bugoff' to never ask again): ")
+            if key.lower() == 'skip':
+                continue
+            elif key.lower() == 'bugoff':
+                bugoff_list.append(service)
+            else:
+                encrypted_key = encrypt_keys(key)
+                store_encrypted_key(service, encrypted_key)
+                api_keys[service] = encrypted_key
+    return api_keys
 
 if __name__ == "__main__":
-    setup()
+    install_dependencies()
+    display_marvin_intro()
+    request_api_keys()
+
+    # Launch Flask app after keys are managed
+    subprocess.run(['python', 'app.py'])
