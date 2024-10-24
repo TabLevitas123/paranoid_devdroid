@@ -22,18 +22,21 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install Python and Node.js dependencies
+    - name: Install Python (Flask) dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt  # Flask dependencies
-        npm install  # React dependencies
-        pip install selenium webdriver-manager  # Selenium for UI testing
+
+    - name: Install Node.js (React) dependencies
+      working-directory: paranoid-ui
+      run: |
+        npm install  # Install React dependencies
 
     - name: Run Flask and React apps
       id: run_flask_react
       run: |
         nohup python app.py &  # Flask backend
-        nohup npm start &  # React frontend
+        nohup npm start --prefix paranoid-ui &  # React frontend
       continue-on-error: true
 
     - name: Handle errors with OpenAI and Selenium
