@@ -1,0 +1,59 @@
+
+name: Auto Fix Errors, Flask/React Integration, and UI Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test_and_fix:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run OpenAI Auto Fix (using error data)
+      run: |
+        # Replace this with actual implementation of OpenAI error-fixing script
+        echo "Running OpenAI error fix script"
+        python fix_errors.py
+
+    - name: Run Flask Integration Tests
+      run: |
+        # Assuming flask test setup is defined in setup_runtime.py or elsewhere
+        python -m unittest setup_runtime.py
+
+    - name: Set up Node.js for React tests
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    
+    - name: Install React dependencies
+      run: |
+        cd paranoid-ui && npm install
+
+    - name: Run React UI Tests
+      run: |
+        cd paranoid-ui && npm test
+
+    - name: Run Agent Tests (Full System Test for run.py and Agents)
+      run: |
+        python run.py
+
+    - name: Generate Test Coverage Report
+      run: |
+        echo "Test coverage generation step (placeholder)"
