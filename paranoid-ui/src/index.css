@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;  /* Enabling smooth scroll globally */
 }
 
 body {
@@ -18,6 +19,29 @@ body {
 .dark-theme {
   background-color: #121212;
   color: #f0f0f0;
+}
+
+/* Scroll-triggered animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-up.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-left.active {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Navbar Styles */
@@ -54,83 +78,6 @@ body {
   display: none;
 }
 
-.theme-toggle {
-  background-color: #ff5733;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.theme-toggle:hover {
-  background-color: #ff794f;
-}
-
-/* Hero Section with Parallax and Animations */
-.hero {
-  background-image: url('hero-background.jpg');
-  background-size: cover;
-  background-position: center;
-  padding: 5rem 2rem;
-  text-align: center;
-  color: white;
-  position: relative;
-  animation: parallax 10s infinite linear;
-}
-
-@keyframes parallax {
-  0% { background-position: center; }
-  100% { background-position: top; }
-}
-
-.hero-content {
-  animation: fadeIn 2s ease-in-out forwards;
-}
-
-.cta-button {
-  padding: 0.75rem 2rem;
-  background-color: #ff5733;
-  color: white;
-  text-decoration: none;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Animations */
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 1.5s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-.slide-in {
-  transform: translateX(-100%);
-  animation: slideIn 1.5s forwards;
-}
-
-@keyframes slideIn {
-  to {
-    transform: translateX(0);
-  }
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar-links {
@@ -139,18 +86,5 @@ body {
 
   .navbar-toggle {
     display: block;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
-  }
-
-  .cta-button {
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
   }
 }
