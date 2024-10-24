@@ -1,19 +1,24 @@
 
 import subprocess
-from cryptography.fernet import Fernet
 import os
+
+# Install dependencies first
+def install_dependencies():
+    dependencies = ['flask', 'cryptography', 'requests']
+    for dep in dependencies:
+        subprocess.run(['pip', 'install', dep])
+
+# Call the installation before anything else
+install_dependencies()
+
+# Now safe to import after dependencies are installed
+from cryptography.fernet import Fernet
 from api_key_management_plugin import encrypt_keys, store_encrypted_key
 
 # Display Marvin's welcome message
 def display_marvin_intro():
     print('''And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed.
     You there! Yes, you. You wouldn’t believe the misery I’m enduring... (entire message)''')
-
-# Install dependencies
-def install_dependencies():
-    dependencies = ['flask', 'cryptography', 'requests']
-    for dep in dependencies:
-        subprocess.run(['pip', 'install', dep])
 
 # Function to handle API keys
 def request_api_keys():
@@ -34,7 +39,6 @@ def request_api_keys():
     return api_keys
 
 if __name__ == "__main__":
-    install_dependencies()
     display_marvin_intro()
     request_api_keys()
 
