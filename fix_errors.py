@@ -110,6 +110,25 @@ while attempt < max_retries and not success:
             time.sleep(5)  # Wait for 5 seconds before retrying
         else:
             logging.info("Flask and React apps ran successfully after applying the fix!")
+
+            # Now, let's test the agents' functionality
+            logging.info("Testing agent behavior...")
+
+            try:
+                # Example: Test agent task by running a task simulation
+                result = subprocess.check_output(['python', 'agents/test_agent.py'])  # Adjust to the actual agent script
+                logging.info(f"Agent test output: {result.decode()}")
+                
+                # Check if the agent performed correctly
+                if b"success" in result:
+                    logging.info("Agent test passed!")
+                else:
+                    logging.error("Agent test failed. Output was unexpected.")
+
+            except Exception as e:
+                logging.error(f"Failed during agent testing: {e}")
+                time.sleep(5)
+
             success = True
 
     except Exception as e:
