@@ -1,5 +1,19 @@
 
 Flask==2.1.1
-selenium==4.5.0
-webdriver-manager==3.8.5
+PyGithub
+axios
+boto3
+cryptography
+flask
+matplotlib
+numpy
 openai==0.27.0
+pandas
+psycopg2
+react
+react-dom
+requests
+scipy
+selenium==4.5.0
+sklearn
+webdriver-manager==3.8.5
