@@ -35,6 +35,20 @@ def request_api_keys():
                 api_keys[service] = encrypted_key
     return api_keys
 
+# Launch Flask app as API backend only
+def launch_flask():
+    print("Launching Flask backend...")
+    flask_process = subprocess.Popen(['python', 'app.py'])
+    return flask_process
+
+# Launch React frontend
+def launch_react():
+    print("Installing React dependencies and launching React frontend...")
+    react_ui_path = os.path.join(os.getcwd(), "paranoid-ui")
+    os.chdir(react_ui_path)
+    subprocess.run(["npm", "install"])  # Ensure dependencies are installed
+    subprocess.Popen(['npm', 'start'])
+
 # Main function
 if __name__ == "__main__":
     display_marvin_intro()
@@ -42,6 +56,9 @@ if __name__ == "__main__":
     # Manage API keys
     api_keys = request_api_keys()
 
-    # Launch the Flask app
-    print("Launching Flask app...")
-    subprocess.run(['python', 'app.py'])
+    # Launch Flask and React concurrently
+    flask_process = launch_flask()
+    launch_react()
+
+    # Ensure Flask process keeps running
+    flask_process.wait()
