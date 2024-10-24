@@ -15,16 +15,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: dependencies
+    - name: Install expect
       run: |
-        sudo apt-get expect
+        sudo apt-get update
+        sudo apt-get install -y expect
 
     - name: Run setup_runtime.py and auto-skip any prompt
       run: |
         expect << EOF
         spawn python setup_runtime.py
         expect {
-          -re ".*" { send "skip"; exp_continue }  # Sending "skip" followed by newline
+          -re ".*" { send "skip
+"; exp_continue }  # Sending "skip" followed by newline
           eof
         }
         EOF
