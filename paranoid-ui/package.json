@@ -18,7 +18,7 @@
     "resolve-url-loader": "^5.0.0",
     "css-select": "^4.1.3",
     "svgo": "^2.3.0",
-    "@svgr/webpack": "^5.5.1",
+    "@svgr/webpack": "^5.4.0",  # Valid version
     "@svgr/plugin-svgo": "^5.5.1"
   },
   "scripts": {
