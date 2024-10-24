@@ -1,0 +1,27 @@
+
+.websocket-container {
+  padding: 1.5rem;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.websocket-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.websocket-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.websocket-container li {
+  background-color: white;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
