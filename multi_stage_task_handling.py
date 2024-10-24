@@ -1,60 +1,54 @@
 
-import random
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 
-class MultiStageTaskManager:
+class MultiStageTaskHandler:
     def __init__(self, num_stages=5):
         self.num_stages = num_stages
-        self.q_table = np.zeros((self.num_stages, 2))  # Q-table for stage handling (5 stages, 2 actions: allocate resources or defer)
+        self.q_table = np.zeros((self.num_stages, 2))  # Q-table for stage handling (num_stages x 2 actions: allocate or defer)
         self.gamma = 0.9  # Discount factor for future rewards
-        self.learning_rate = 0.1
+        self.alpha = 0.1  # Learning rate for Q-Learning
+        self.epsilon = 0.1  # Exploration factor for epsilon-greedy strategy
         self.stage_efficiency = np.random.rand(self.num_stages)  # Simulated efficiency for each stage
-        self.deep_learner = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=1000)  # Deep Learning for task stage predictions
-        self.train_deep_learner()
+        self.deep_learner = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=1000)  # Deep Learning for stage predictions
 
-    def train_deep_learner(self):
-        # Mock training data for task stage success/failure prediction
+        # Training the deep learner with simulated data
         X_train = np.random.rand(100, 2)  # Simulated task data
-        y_train = np.random.randint(2, size=100)  # Task stage success or failure (0 or 1)
+        y_train = np.random.randint(2, size=100)  # Task success (0 or 1)
         self.deep_learner.fit(X_train, y_train)
 
-    def predict_stage_success(self, stage_data):
-        return self.deep_learner.predict([stage_data])[0]
+    def choose_action(self, stage):
+        # Epsilon-greedy strategy for Q-learning: explore or exploit
+        if np.random.rand() < self.epsilon:
+            return np.random.choice([0, 1])  # Random action: 0 = defer, 1 = allocate
+        return np.argmax(self.q_table[stage])  # Choose action with highest Q-value
 
-    def handle_multi_stage_task(self):
-        for stage_id in range(self.num_stages):
-            stage_data = [random.random(), random.random()]
-            predicted_success = self.predict_stage_success(stage_data)
+    def update_q_value(self, stage, action, reward, next_stage):
+        # Q-learning update rule
+        max_future_q = np.max(self.q_table[next_stage])
+        current_q = self.q_table[stage, action]
+        self.q_table[stage, action] = (1 - self.alpha) * current_q + self.alpha * (reward + self.gamma * max_future_q)
 
-            if random.random() < predicted_success:
-                reward = self.allocate_resources(stage_id)
+    def allocate_resources(self, stage):
+        # Simulate resource allocation success or failure using deep learning
+        task_data = np.array([stage, self.stage_efficiency[stage]]).reshape(1, -1)
+        predicted_success = self.deep_learner.predict(task_data)
+        return int(predicted_success[0])
+
+    def manage_multi_stage_task(self):
+        for stage in range(self.num_stages):
+            action = self.choose_action(stage)
+            if action == 1:  # Allocate resources
+                success = self.allocate_resources(stage)
+                reward = 1 if success else -1
             else:
-                reward = self.defer_stage(stage_id)
+                reward = 0  # No reward for deferring
+            next_stage = stage + 1 if stage + 1 < self.num_stages else 0
+            self.update_q_value(stage, action, reward, next_stage)
 
-            self.update_q_table(stage_id, reward)
-
-    def allocate_resources(self, stage_id):
-        print(f"Allocating resources for stage {stage_id}...")
-        # Simulate resource allocation success or failure
-        allocation_success = random.random() < self.stage_efficiency[stage_id]
-        if allocation_success:
-            print(f"Resources for stage {stage_id} allocated successfully.")
-            return 1  # Reward for Q-Learning
-        else:
-            print(f"Resource allocation for stage {stage_id} failed.")
-            return -1  # Penalty for Q-Learning
-
-    def defer_stage(self, stage_id):
-        print(f"Deferring stage {stage_id}...")
-        return 0  # Neutral action for Q-Learning
-
-    def update_q_table(self, stage_id, reward):
-        action = 0 if reward > 0 else 1  # 0 for allocate resources, 1 for defer
-        self.q_table[stage_id, action] += self.learning_rate * (reward + self.gamma * np.max(self.q_table[stage_id]) - self.q_table[stage_id, action])
-        print(f"Updated Q-table for stage {stage_id}: {self.q_table[stage_id]}")
-
-# Example usage
+# Example Usage
 if __name__ == "__main__":
-    task_manager = MultiStageTaskManager()
-    task_manager.handle_multi_stage_task()
+    task_handler = MultiStageTaskHandler()
+    for _ in range(10):  # Simulate 10 multi-stage task management cycles
+        task_handler.manage_multi_stage_task()
+    print("Q-Table after task handling:", task_handler.q_table)
