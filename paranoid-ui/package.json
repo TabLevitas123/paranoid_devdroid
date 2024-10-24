@@ -18,8 +18,8 @@
     "resolve-url-loader": "^5.0.0",
     "css-select": "^4.1.3",
     "svgo": "^2.3.0",
-    "@svgr/webpack": "^5.5.1",  # Updated @svgr/webpack to avoid vulnerability
-    "@svgr/plugin-svgo": "^5.5.1"  # Updated @svgr/plugin-svgo to avoid vulnerability
+    "@svgr/webpack": "^5.5.1",
+    "@svgr/plugin-svgo": "^5.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
