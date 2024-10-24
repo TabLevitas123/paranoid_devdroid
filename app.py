@@ -1,20 +1,25 @@
 
-import webbrowser
-from threading import Timer
-from flask import Flask
+import os
+from flask import Flask, send_from_directory, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/build')
 
-# Flask route
+# Serve React app
 @app.route('/')
-def index():
-    return "Hello, Flask is running!"
+def serve_react_app():
+    return send_from_directory(app.static_folder, 'index.html')
 
-# Function to launch browser
-def open_browser():
-    webbrowser.open_new('http://127.0.0.1:5000/')
+# Example API route
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    # Example data to be used by React
+    return jsonify({"message": "Hello from Flask API!"})
 
-# Start the Flask server with automatic browser opening
+# Fallback for all other routes to serve React app
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory(app.static_folder, 'index.html')
+
+# Start the Flask server
 if __name__ == "__main__":
-    Timer(1, open_browser).start()
     app.run()
