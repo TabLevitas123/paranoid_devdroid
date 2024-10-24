@@ -7,3 +7,4 @@ Enhanced the Roastmaster to version 2.1:
 5. Real-Time Critique Feedback: Delivers on-the-fly feedback during task execution to improve decision-making.
 
 - Fixed JSON loading in setup_runtime.py
+- Updated React dependencies to secure versions in paranoid-ui.
