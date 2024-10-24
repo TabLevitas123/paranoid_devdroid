@@ -1,60 +1,60 @@
 
-from collaborative_marvin import CollaborativeMarvin
-from communication_protocol import CommunicationProtocol
-from core import CoreSystem
-from dynamic_exploration_marvin import DynamicExplorationMarvin
-from efficiency_vs_accuracy import EfficiencyVsAccuracy
-from expert_panel import ExpertPanel
-from fix_errors import ErrorFixer
-from goal_oriented_marvin import GoalOrientedMarvin
-from health_check import HealthCheck
-from long_term_memory_marvin import LongTermMemoryMarvin
-from marvin_orchestration import MarvinOrchestration
-from meta_learning_marvin import MetaLearningMarvin
-from monitoring.performance_monitoring_marvin import PerformanceMonitoringMarvin
-from multi_agent_marvin import MultiAgentMarvin
-from multi_stage_marvin import MultiStageMarvin
-from multi_stage_task_handling import MultiStageTaskHandling
-from nested_task_marvin import NestedTaskMarvin
-from performance_tracking_marvin import PerformanceTrackingMarvin
-from predictive_optimization_marvin import PredictiveOptimizationMarvin
-from real_time_awareness_marvin import RealTimeAwarenessMarvin
-from resource_efficient_marvin import ResourceEfficientMarvin
-from roastmaster import RoastMaster
+import importlib
 
-# Agent initialization
-agents = {
-    'collaborative': CollaborativeMarvin(),
-    'communication': CommunicationProtocol(),
-    'core': CoreSystem(),
-    'exploration': DynamicExplorationMarvin(),
-    'efficiency_vs_accuracy': EfficiencyVsAccuracy(),
-    'expert_panel': ExpertPanel(),
-    'error_fixer': ErrorFixer(),
-    'goal_oriented': GoalOrientedMarvin(),
-    'health_check': HealthCheck(),
-    'long_term_memory': LongTermMemoryMarvin(),
-    'orchestration': MarvinOrchestration(),
-    'meta_learning': MetaLearningMarvin(),
-    'performance_monitoring': PerformanceMonitoringMarvin(),
-    'multi_agent': MultiAgentMarvin(),
-    'multi_stage': MultiStageMarvin(),
-    'task_handling': MultiStageTaskHandling(),
-    'nested_task': NestedTaskMarvin(),
-    'performance_tracking': PerformanceTrackingMarvin(),
-    'predictive_optimization': PredictiveOptimizationMarvin(),
-    'real_time_awareness': RealTimeAwarenessMarvin(),
-    'resource_efficient': ResourceEfficientMarvin(),
-    'roastmaster': RoastMaster(),
-}
+# Load all agents from the 'agents' directory dynamically, along with the newly specified agents
+def load_agents():
+    agents = {}
+    # List of newly specified agent modules
+    new_agent_modules = [
+        'collaborative_marvin', 'communication_protocol', 'core', 'dynamic_exploration_marvin', 
+        'efficiency_vs_accuracy', 'expert_panel', 'fix_errors', 'goal_oriented_marvin', 
+        'health_check', 'long_term_memory_marvin', 'marvin_orchestration', 'meta_learning_marvin', 
+        'monitoring.performance_monitoring_marvin', 'multi_agent_marvin', 'multi_stage_marvin', 
+        'multi_stage_task_handling', 'nested_task_marvin', 'performance_tracking_marvin', 
+        'predictive_optimization_marvin', 'real_time_awareness_marvin', 'resource_efficient_marvin', 'roastmaster'
+    ]
 
+    # Adding the agents from the agents directory dynamically
+    agent_modules = [
+        'adaptive_task_complexity', 'agent_collaboration', 'agent_collaboration_analytics', 
+        'agent_learning', 'agent_llm_integration', 'agent_logging', 'autonomous_system_scaling', 
+        'bottleneck_detection', 'cognitive_knowledge_fusion', 'cognitive_synergy', 
+        'cross_system_integration', 'decision_tree_construction', 'decision_tree_execution', 
+        'deep_strategy_orchestration', 'ecosystem_optimization', 'energy_optimization', 
+        'global_awareness', 'hierarchical_task_handling', 'interrogator_enhanced', 
+        'llm_feedback_loop', 'llm_strategy_optimization', 'llm_task_breakdown', 
+        'long_term_task_memory', 'memory_garbage_collection', 'meta_learning', 
+        'metasystemic_consciousness', 'modular_agents', 'multi_agent_task_orchestration', 
+        'multi_agent_task_prioritization', 'neural_cognitive_evolution', 'performance_monitoring', 
+        'predictive_task_preprocessing', 'real_time_feedback_learning', 'real_time_resource_allocation', 
+        'reinforcement_learning', 'roastmaster_2_0', 'roastmaster_2_1', 'roastmaster_enhanced', 
+        'role_specialization', 'self_governance', 'self_optimization_feedback', 
+        'self_replicating_agent_ecosystem', 'self_reprogramming', 'system_self_replication', 
+        'task_complexity_scoring', 'task_flow_automation', 'task_simulation'
+    ]
+
+    # Combine all agents
+    all_agent_modules = agent_modules + new_agent_modules
+
+    for module in all_agent_modules:
+        try:
+            imported_module = importlib.import_module(f"agents.{module}")
+            agents[module] = getattr(imported_module, 'Agent')()
+        except (ModuleNotFoundError, AttributeError) as e:
+            print(f"Failed to load {module}: {str(e)}")
+    
+    return agents
+
+# Main function to assign and handle tasks
 def marvin_task_prompt():
-    print("Welcome to Marvin's System. Please provide a task:")
+    print("Welcome to Marvin's Full System. Please provide a task:")
     task = input("Insert task description: ")
 
-    # Dynamically select the appropriate agents for the task
+    agents = load_agents()
+    
+    # Select the appropriate agents dynamically based on task
     selected_agents = [agent for agent_name, agent in agents.items() if agent.can_handle_task(task)]
-
+    
     if selected_agents:
         print(f"Selected agents: {[agent.__class__.__name__ for agent in selected_agents]}")
         for agent in selected_agents:
