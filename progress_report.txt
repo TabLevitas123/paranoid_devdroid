@@ -5,3 +5,5 @@ Enhanced the Roastmaster to version 2.1:
 3. Task Outcome Prediction: Predicts task outcomes based on agent plans, identifying potential risks.
 4. Humorous Error Commentary: Provides witty or sarcastic feedback on flaws in agent reasoning.
 5. Real-Time Critique Feedback: Delivers on-the-fly feedback during task execution to improve decision-making.
+
+- Fixed JSON loading in setup_runtime.py
