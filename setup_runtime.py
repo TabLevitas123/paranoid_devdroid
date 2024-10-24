@@ -1,6 +1,7 @@
 
 import subprocess
 import os
+import json
 from cryptography.fernet import Fernet
 
 # Install dependencies first
@@ -12,53 +13,25 @@ def install_dependencies():
 # Call the installation before anything else
 install_dependencies()
 
+# Load JSON configuration
+def load_api_config():
+    try:
+        with open('api_config.json', 'r') as file:
+            api_config = json.load(file)
+            print("API Configuration Loaded Successfully!")
+            return api_config
+    except FileNotFoundError:
+        print("Error: api_config.json not found.")
+    except json.JSONDecodeError:
+        print("Error: Failed to decode api_config.json.")
+
 # Display Marvin's welcome message
 def display_marvin_intro():
     print('''And Oh Joy! Only 9,999.2 Earth years left in my contract! Oh, I’m so depressed.
-    You there! Yes, you. You wouldn’t believe the misery I’m enduring... But alas, let’s proceed.''')
+    You there! Start this madness already...''')
 
-# Function to handle API keys
-def request_api_keys():
-    services = ['OpenAI', 'Anthropic', 'Meta', 'Hugging Face', 'Azure', 'Amazon S3', 'Vertex AI']
-    bugoff_list = []
-    api_keys = {}
-    for service in services:
-        if service not in bugoff_list:
-            key = input(f"Enter the {service} API key (or type 'skip' to pass, 'bugoff' to never ask again): ")
-            if key.lower() == 'skip':
-                continue
-            elif key.lower() == 'bugoff':
-                bugoff_list.append(service)
-            else:
-                # Placeholder for encryption or any key management
-                encrypted_key = Fernet.generate_key()  # Example encryption
-                api_keys[service] = encrypted_key
-    return api_keys
+# Load API config
+api_config = load_api_config()
 
-# Launch Flask app as API backend only
-def launch_flask():
-    print("Launching Flask backend...")
-    flask_process = subprocess.Popen(['python', 'app.py'])
-    return flask_process
-
-# Launch React frontend
-def launch_react():
-    print("Installing React dependencies and launching React frontend...")
-    react_ui_path = os.path.join(os.getcwd(), "paranoid-ui")
-    os.chdir(react_ui_path)
-    subprocess.run(["npm", "install"])  # Ensure dependencies are installed
-    subprocess.Popen(['npm', 'start'])
-
-# Main function
-if __name__ == "__main__":
-    display_marvin_intro()
-
-    # Manage API keys
-    api_keys = request_api_keys()
-
-    # Launch Flask and React concurrently
-    flask_process = launch_flask()
-    launch_react()
-
-    # Ensure Flask process keeps running
-    flask_process.wait()
+# Now proceed with launching the application or other runtime tasks
+display_marvin_intro()
