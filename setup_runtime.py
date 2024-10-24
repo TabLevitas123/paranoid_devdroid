@@ -1,7 +1,6 @@
 
 import subprocess
 import os
-
 # Install dependencies first
 def install_dependencies():
     dependencies = ['flask', 'cryptography', 'requests']
@@ -13,7 +12,7 @@ install_dependencies()
 
 # Now safe to import after dependencies are installed
 from cryptography.fernet import Fernet
-from api_key_management_plugin import encrypt_keys, store_encrypted_key
+from api_key_management_plugin import APIKeyManager
 
 # Display Marvin's welcome message
 def display_marvin_intro():
@@ -33,8 +32,7 @@ def request_api_keys():
             elif key.lower() == 'bugoff':
                 bugoff_list.append(service)
             else:
-                encrypted_key = encrypt_keys(key)
-                store_encrypted_key(service, encrypted_key)
+                encrypted_key = api_keys
                 api_keys[service] = encrypted_key
     return api_keys
 

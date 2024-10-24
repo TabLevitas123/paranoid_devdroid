@@ -18,13 +18,12 @@ class APIKeyManager:
         else:
             with open(self.key_file, 'rb') as f:
                 key = f.read()
-        self.fernet = Fernet(key)
-
+        self.Fernet = Fernet(key)
     def encrypt_and_store_keys(self, api_keys):
         # Encrypt and store API keys in a text file
         with open(self.api_key_file, 'wb') as f:
             for service, key in api_keys.items():
-                encrypted_key = self.fernet.encrypt(key.encode())
+                encrypted_key = self.Fernet.encrypt(key.encode())
                 f.write(f"{service}: {encrypted_key.decode()}\n".encode())
 
     def retrieve_keys(self):
@@ -38,7 +37,7 @@ class APIKeyManager:
             lines = f.readlines()
             for line in lines:
                 service, encrypted_key = line.decode().strip().split(': ')
-                decrypted_key = self.fernet.decrypt(encrypted_key.encode()).decode()
+                decrypted_key = self.Fernet.decrypt(encrypted_key.encode()).decode()
                 decrypted_keys[service] = decrypted_key
         return decrypted_keys
 
